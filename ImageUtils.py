@@ -23,8 +23,8 @@ def convolve(input, w, h, kernel, kw, kh):
                     x = col + kernelX - (kw/2)
                     # The following nested conditions makes sure that the
                     # kernel's origin doesn't go out of the image's boundaries.
-                    if(x >= 0 && y >= 0):
-                        if(x < w && y < h):
+                    if(x >= 0 and y >= 0):
+                        if(x < w and y < h):
                             index = y * w + x
                             kIndex = kernelY * kw + kernelX
                             rgb = list(input[index])
