@@ -3,7 +3,7 @@ from operator import itemgetter
 import ImageUtils as util
 from datetime import datetime
 
-def median(input, w, h, ww, wh):
+def median2(input, w, h, ww, wh):
     output = []
     window = [(0, 0, 0) for el in range(ww * wh)]
     for row in range(h):
@@ -24,13 +24,19 @@ def median(input, w, h, ww, wh):
             output.append(window[len(window) / 2])
     return output
 
+def median(input, w, h, radius):
+    output = []
+    ww = (radius * 2) + 1
+    wh = ww
+    return median2(input, w, h, ww, wh)
+
 def main():
     im = util.open('in/captcha.png')
     arr = util.toBytes(im)
     out = []
     fileMedian = "out/m-" + datetime.now().strftime('%Y%m%d%H%M%S') + ".png"
     print("Executing... ")
-    out = median(arr, im.width, im.height, 3, 3)
+    out = median(arr, im.width, im.height, 3)
     util.save(fileMedian, out, im.mode, im.size)
     print("done saving ")
 
