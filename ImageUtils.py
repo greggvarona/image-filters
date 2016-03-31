@@ -39,11 +39,11 @@ def convolve(input, w, h, kernel, kw, kh):
 def clampRGBValue(theByte):
     return int(max(min(theByte, 255), 0))
 
-def toByte(rgbaTuple):
+def toByte(rgbTuple):
     rgba = list(rgbTuple)
     return (rgba[0] << 16) | (rgba[1] << 8) | (rgba[2])
 
-def thresholding(input, w, h, level):
+def uniformedThresholding(input, w, h, level):
     output = []
     for row in range(h):
         for col in range(w):
@@ -52,6 +52,6 @@ def thresholding(input, w, h, level):
             levelRgbByte = toByte(level)
             rgbByte = toByte(input[index])
             if (rgbByte < levelRgbByte):
-                replacement = tuple([0, 0, 0, 0])
+                replacement = tuple([0, 0, 0, 255])
             output.append(replacement)
     return output
