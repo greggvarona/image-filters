@@ -11,10 +11,11 @@ def dilate(input, w, h):
 
 def main():
     print 'executing...'
-    im = util.open('in/captcha.png')
+    im = util.open('in/inverted-captcha.png')
     fileName = "out/o-" + datetime.now().strftime('%Y%m%d%H%M%S') + ".png"
     arr = util.toBytes(im)
     arr = grayScale.luminousity(arr)
+    arr = util.uniformedThresholding(arr, im.width, im.height, tuple([100,100,100]))
     arr = smoothing.median(arr, im.width, im.height, 1)
     util.save(fileName, arr, im.mode, im.size)
     print 'done executing...'

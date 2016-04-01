@@ -1,3 +1,5 @@
+import operator
+from operator import itemgetter
 from PIL import Image
 
 def open(fileName):
@@ -55,3 +57,9 @@ def uniformedThresholding(input, w, h, level):
                 replacement = tuple([0, 0, 0, 255])
             output.append(replacement)
     return output
+
+def downSignal():
+    return (0, 0, 0)
+
+def isEdge(index, w, h):
+    return (index / w == 0 or index == (w-1))
