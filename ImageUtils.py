@@ -63,3 +63,12 @@ def downSignal():
 
 def isEdge(index, w, h):
     return (index / w == 0 or index == (w-1))
+
+def frequencyDistribution(input, w, h, fieldIndex):
+    output = [0] * 256
+    for row in range(h):
+        for col in range(w):
+            index = row * w + col
+            rgba = list(input[index])
+            output[rgba[fieldIndex]] = output[rgba[fieldIndex]] + 1
+    return output
