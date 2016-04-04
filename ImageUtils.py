@@ -46,14 +46,14 @@ def toByte(rgbTuple):
 
 def uniformedThresholding(input, w, h, level):
     output = []
+    levelRgbByte = toByte(level)
     for row in range(h):
         for col in range(w):
-            replacement = tuple([255, 255, 255])
             index = row * w + col
-            levelRgbByte = toByte(level)
+            replacement = tuple([0, 0, 0])
             rgbByte = toByte(input[index])
             if (rgbByte < levelRgbByte):
-                replacement = tuple([0, 0, 0])
+                replacement = tuple([255, 255, 255])
             output.append(replacement)
     return output
 
