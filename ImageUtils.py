@@ -31,30 +31,29 @@ def convolve(input, w, h, kernel, kw, kh):
                             kIndex = kernelY * kw + kernelX
                             rgb = list(input[index])
                             k = kernel[kIndex]
-                            a += k * rgb[3]
                             r += k * rgb[0]
                             g += k * rgb[1]
                             b += k * rgb[2]
-            output.append(tuple([clampRGBValue(r), clampRGBValue(g), clampRGBValue(b), clampRGBValue(a)]))
+            output.append(tuple([clampRGBValue(r), clampRGBValue(g), clampRGBValue(b)]))
     return output
 
 def clampRGBValue(theByte):
     return int(max(min(theByte, 255), 0))
 
 def toByte(rgbTuple):
-    rgba = list(rgbTuple)
-    return (rgba[0] << 16) | (rgba[1] << 8) | (rgba[2])
+    rgb = list(rgbTuple)
+    return (rgb[0] << 16) | (rgb[1] << 8) | (rgb[2])
 
 def uniformedThresholding(input, w, h, level):
     output = []
     for row in range(h):
         for col in range(w):
-            replacement = tuple([255, 255, 255, 255])
+            replacement = tuple([255, 255, 255])
             index = row * w + col
             levelRgbByte = toByte(level)
             rgbByte = toByte(input[index])
             if (rgbByte < levelRgbByte):
-                replacement = tuple([0, 0, 0, 255])
+                replacement = tuple([0, 0, 0])
             output.append(replacement)
     return output
 
@@ -63,12 +62,3 @@ def downSignal():
 
 def isEdge(index, w, h):
     return (index / w == 0 or index == (w-1))
-
-def frequencyDistribution(input, w, h, fieldIndex):
-    output = [0] * 256
-    for row in range(h):
-        for col in range(w):
-            index = row * w + col
-            rgba = list(input[index])
-            output[rgba[fieldIndex]] = output[rgba[fieldIndex]] + 1
-    return output

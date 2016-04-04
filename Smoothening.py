@@ -44,10 +44,10 @@ def handleEdge(window):
     return output
 
 def main():
-    im = util.open('in/captcha.png')
+    im = util.open('in/captcha.jpg')
     arr = util.toBytes(im)
     out = []
-    fileMedian = "out/m-" + datetime.now().strftime('%Y%m%d%H%M%S') + ".png"
+    fileMedian = "out/m-" + datetime.now().strftime('%Y%m%d%H%M%S') + ".jpg"
     print("Executing... ")
     out = median(arr, im.width, im.height, 1)
     util.save(fileMedian, out, im.mode, im.size)
