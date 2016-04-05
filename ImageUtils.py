@@ -29,12 +29,12 @@ def convolve(input, w, h, kernel, kw, kh):
                         if(x < w and y < h):
                             index = y * w + x
                             kIndex = kernelY * kw + kernelX
-                            rgb = list(input[index])
+                            rgba = list(input[index])
                             k = kernel[kIndex]
-                            r += k * rgb[0]
-                            g += k * rgb[1]
-                            b += k * rgb[2]
-            output.append(tuple([clampRGBValue(r), clampRGBValue(g), clampRGBValue(b)]))
+                            r += k * rgba[0]
+                            g += k * rgba[1]
+                            b += k * rgba[2]
+            output.append(tuple([clampRGBValue(r), clampRGBValue(g), clampRGBValue(b), rgba[3]]))
     return output
 
 def clampRGBValue(theByte):
@@ -50,10 +50,10 @@ def uniformedThresholding(input, w, h, level):
     for row in range(h):
         for col in range(w):
             index = row * w + col
-            replacement = tuple([0, 0, 0])
+            replacement = (0, 0, 0, 255)
             rgbByte = toByte(input[index])
             if (rgbByte < levelRgbByte):
-                replacement = tuple([255, 255, 255])
+                replacement = (255, 255, 255, 255)
             output.append(replacement)
     return output
 

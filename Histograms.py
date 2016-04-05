@@ -9,8 +9,8 @@ def frequencyDistribution(input, w, h, colorIndex):
     for row in range(h):
         for col in range(w):
             index = row * w + col
-            rgb = list(input[index])
-            output[rgb[colorIndex]] = output[rgb[colorIndex]] + 1
+            rgba = list(input[index])
+            output[rgba[colorIndex]] = output[rgba[colorIndex]] + 1
     return output
 
 def normalize(input, w, h, colorIndex):
@@ -22,10 +22,10 @@ def normalize(input, w, h, colorIndex):
     for row in range(h):
         for col in range(w):
             index = row * w + col
-            rgb = list(input[index])
-            color = rgb[colorIndex]
+            rgba = list(input[index])
+            color = rgba[colorIndex]
             normalized = int(math.floor((color - minimum) * 255 / theRange))
-            output.append(tuple([normalized, normalized, normalized]))
+            output.append(tuple([normalized, normalized, normalized, rgba[3]]))
     return output
 
 def darkest(histogram):
@@ -58,16 +58,16 @@ def equalize(input, w, h, colorIndex):
     for row in range(h):
         for col in range(w):
             index = row * w + col
-            rgb = list(input[index])
-            newRgb = histogram[rgb[colorIndex]]
-            output.append(tuple([newRgb, newRgb, newRgb]))
+            rgba = list(input[index])
+            newRgb = histogram[rgba[colorIndex]]
+            output.append(tuple([newRgb, newRgb, newRgb, rgba[3]]))
     return output
 
 def main():
     print 'Executing Histograms.main'
-    im = util.open('in/captcha.jpg')
-    fileName = "out/normalized-" + datetime.now().strftime('%Y%m%d%H%M%S') + ".jpg"
-    fileName2 = "out/equalized-" + datetime.now().strftime('%Y%m%d%H%M%S') + ".jpg"
+    im = util.open('in/captcha.png')
+    fileName = "out/normalized-" + datetime.now().strftime('%Y%m%d%H%M%S') + ".png"
+    fileName2 = "out/equalized-" + datetime.now().strftime('%Y%m%d%H%M%S') + ".png"
     arr = util.toBytes(im)
     arr = grayScale.averaging(arr)
     util.save("out/tempGray.png", arr, im.mode, im.size)
