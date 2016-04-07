@@ -2,10 +2,11 @@ import operator
 from operator import itemgetter
 import ImageUtils as util
 from datetime import datetime
+import time
 
 def median2(input, w, h, ww, wh):
     output = []
-    window = [util.downSignal() for el in range(ww * wh)]
+    window = [util.downSignal()] * ww * wh
     for row in range(h):
         for col in range(w):
             origin = row * w + col
@@ -32,24 +33,27 @@ def median(input, w, h, radius):
     wh = ww
     return median2(input, w, h, ww, wh)
 
-def handleEdge(window):
-    output = []
-    output = sorted(window, key=itemgetter(0, 1, 2))
+def handleEdge(sortedWindow):
+    output = sortedWindow
     idx = 0
-    #print output
+    resort = 0
     while output[idx] == util.downSignal():
         output[idx] = output[len(output) - 1 - idx]
         idx = idx + 1
-    output = sorted(output, key=itemgetter(0, 1, 2))
+        resort = 1
+    if resort == 1:
+        output = sorted(output, key=itemgetter(0, 1, 2))
     return output
 
 def main():
-    im = util.open('in/captcha.jpg')
+    im = util.open('in/image1.png')
     arr = util.toBytes(im)
     out = []
-    fileMedian = "out/m-" + datetime.now().strftime('%Y%m%d%H%M%S') + ".jpg"
+    fileMedian = "out/m-" + datetime.now().strftime('%Y%m%d%H%M%S') + ".png"
     print("Executing... ")
-    out = median(arr, im.width, im.height, 1)
+    start = time.time()
+    out = median(arr, im.width, im.height, 2)
+    print 'median : ' + str(time.time() - start)
     util.save(fileMedian, out, im.mode, im.size)
     print("done saving ")
 

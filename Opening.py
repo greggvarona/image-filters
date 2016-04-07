@@ -3,6 +3,7 @@ import GrayScale as grayScale
 import Smoothening as smoothening
 from datetime import datetime
 import math
+import time
 
 def erode(input, w, h, window, ww, wh):
     wwHalf = int(math.floor(ww / 2))
@@ -55,21 +56,27 @@ def opening(input, w, h, ewindow, eww, ewh, dwindow, dww, dwh):
 
 def main():
     print 'executing...'
-    im = util.open('in/captcha.png')
-    erodedFile = "out/eroded-" + datetime.now().strftime('%Y%m%d%H%M%S') + ".png"
-    dilatedFile = "out/dilated-" + datetime.now().strftime('%Y%m%d%H%M%S') + ".png"
+    im = util.open('in/image1.png')
     openingFile = "out/opening-" + datetime.now().strftime('%Y%m%d%H%M%S') + ".png"
     arr = util.toBytes(im)
-    arr = grayScale.luminousity(arr)
+
+    start = time.time()
+    arr = grayScale.averaging(arr)
+    print 'grayscale : ' + str(time.time() - start)
+
+    start = time.time()
     arr = smoothening.median(arr, im.width, im.height, 2)
-    arr = util.uniformedThresholding(arr, im.width, im.height, (100, 100, 100))
+    print 'median : ' + str(time.time() - start)
+
+    start = time.time()
+    arr = util.uniformedThresholding(arr, im.width, im.height, (125, 125, 125))
+    print 'uniformedThresholding : ' + str(time.time() - start)
+
+    start = time.time()
     window = [(0, 0, 0)] * 3 * 3
-    eroded = erode(arr, im.width, im.height, window, 3, 3)
-    dilated = dilate(arr, im.width, im.height, window, 3, 3)
     opened = opening(arr, im.width, im.height, window, 3, 3, window, 3, 3)
-    util.save("out/threshold.png", arr, im.mode, im.size)
-    util.save(erodedFile, eroded, im.mode, im.size)
-    util.save(dilatedFile, dilated, im.mode, im.size)
+    print 'opening : ' + str(time.time() - start)
+
     util.save(openingFile, opened, im.mode, im.size)
     print 'done executing...'
 
